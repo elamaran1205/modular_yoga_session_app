@@ -21,7 +21,7 @@ class YogaSession {
 
 class Segment {
   final String type;
-  final String audio; // expected like 'audio/intro.mp3'
+  final String audio; 
   final int? loops;
   final List<ScriptItem> script;
 
@@ -46,7 +46,7 @@ class ScriptItem {
   final String text;
   final int startSec;
   final int endSec;
-  final String imageRef; // expected full path 'assets/images/xxx.png'
+  final String imageRef; 
 
   ScriptItem({
     required this.text,

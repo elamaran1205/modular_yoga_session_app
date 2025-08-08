@@ -1,12 +1,10 @@
-// session_player.dart
-// ignore_for_file: unused_field
 
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:yoga2/models/yoga_session.dart';
-// optional if needed elsewhere
+
 
 class YogaSessionPlayer extends StatefulWidget {
   final YogaSession session;
@@ -33,13 +31,13 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
   void initState() {
     super.initState();
 
-    // Attach listener to handle when audio completes (segment done)
+
     _audioPlayer.onPlayerComplete.listen((_) {
       debugPrint('Audio completed for segment $_currentSegmentIndex');
       _handleAudioComplete();
     });
 
-    // Optional: listen for errors (some versions provide onPlayerError)
+
     _audioPlayer.onPlayerStateChanged.listen((state) {
       setState(() {
         _audioState = state;
@@ -61,13 +59,13 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
   }
 
   Future<void> _startSession() async {
-    // Guard
+
     if (widget.session.segments.isEmpty) {
       Get.snackbar('No session', 'Session contains no segments');
       return;
     }
 
-    // Ensure previous timers and audio stopped
+    
     _sessionTimer?.cancel();
     try {
       await _audioPlayer.stop();
@@ -78,7 +76,7 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
       _sessionStarted = true;
     });
 
-    // Play current segment and start timer
+   
     await _playCurrentSegment();
 
     _sessionTimer = Timer.periodic(const Duration(seconds: 1), _sessionTimerCallback);
@@ -87,14 +85,13 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
   Future<void> _playCurrentSegment() async {
     final segment = widget.session.segments[_currentSegmentIndex];
 
-    // segment.audio expected to be like 'audio/intro.mp3' (relative to assets/)
+  
     final audioPath = segment.audio;
     debugPrint('Playing audio: $audioPath for segment $_currentSegmentIndex');
 
     try {
-      // stop any current playback
       await _audioPlayer.stop();
-      // play from assets. AssetSource expects path relative to assets/ (eg 'audio/intro.mp3')
+     
       await _audioPlayer.play(AssetSource(audioPath));
       setState(() {
         _audioState = PlayerState.playing;
@@ -111,8 +108,7 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
   }
 
   void _handleAudioComplete() {
-    // Called when audio finishes for the current segment
-    // Advance to next segment or end session
+   
     if (_currentSegmentIndex < widget.session.segments.length - 1) {
       _nextSegment();
     } else {
@@ -128,23 +124,22 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
       _currentScriptIndex = 0;
       _currentTimeInSegment = 0;
     });
-    // play new segment
+  
     _playCurrentSegment();
-    // restart timer
+   
     _sessionTimer = Timer.periodic(const Duration(seconds: 1), _sessionTimerCallback);
   }
 
   void _sessionTimerCallback(Timer timer) {
     if (!_isPlaying) return;
 
-    // Update timers
+
     setState(() {
       _currentTimeInSegment++;
       _totalElapsedTime++;
     });
 
     final currentSegment = widget.session.segments[_currentSegmentIndex];
-    // Advance script index if next script start reached
     if (_currentScriptIndex < currentSegment.script.length - 1) {
       final nextScriptStart = currentSegment.script[_currentScriptIndex + 1].startSec;
       if (_currentTimeInSegment >= nextScriptStart) {
@@ -154,10 +149,10 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
       }
     }
 
-    // If we reach the end of segment script duration, rely on audio complete or force next
+
     final segmentDuration = currentSegment.script.last.endSec;
     if (_currentTimeInSegment >= segmentDuration) {
-      // in case audio didn't trigger completion, move on
+
       if (_currentSegmentIndex < widget.session.segments.length - 1) {
         _nextSegment();
       } else {
@@ -175,7 +170,6 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
         _isPlaying = false;
       });
     } else {
-      // resume audio and timer
       try {
         await _audioPlayer.resume();
         _sessionTimer?.cancel();
@@ -186,7 +180,6 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
         });
       } catch (e) {
         debugPrint('Error resuming audio: $e');
-        // fallback: start current segment fresh
         _startSession();
       }
     }
@@ -253,7 +246,6 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Timer and Controls (same UI as you had)
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Wrap(
@@ -285,7 +277,7 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
               ),
             ),
 
-            // Image Display
+            
             Container(
               height: MediaQuery.of(context).size.height * 0.4,
               child: Image.asset(
@@ -294,7 +286,7 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
               ),
             ),
 
-            // Current Instruction
+            
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Text(
@@ -308,7 +300,7 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
               ),
             ),
 
-            // Segment Progress
+            
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: LinearProgressIndicator(
@@ -318,8 +310,6 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
                 color: Colors.amber,
               ),
             ),
-
-            // Upcoming Instructions
             ListView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -375,7 +365,7 @@ class _YogaSessionPlayerState extends State<YogaSessionPlayer> {
                     child: const Text('START', style: TextStyle(fontWeight: FontWeight.bold)),
                   )
                 else
-                  const SizedBox(width: 0), // Placeholder when session starts
+                  const SizedBox(width: 0), 
 
                 // Next Button
                 ElevatedButton.icon(

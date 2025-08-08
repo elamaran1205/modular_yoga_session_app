@@ -17,7 +17,6 @@ class SessionController extends GetxController {
   bool _isPlaying = false;
 
   Future<void> loadSessionFromAssets(String jsonPath) async {
-    // jsonPath should be something like 'assets/data/poses.json'
     currentSession = await YogaService.loadSession(jsonPath: jsonPath);
   }
 
@@ -25,7 +24,6 @@ class SessionController extends GetxController {
     if (currentSession.segments.isEmpty) return;
     _isPlaying = true;
     currentTime.value = 0;
-    // Example: play first segment's audio (audio stored relative to assets/ e.g. 'audio/intro.mp3')
     final firstAudio = currentSession.segments[0].audio;
     try {
       await audioPlayer.stop();
@@ -33,12 +31,10 @@ class SessionController extends GetxController {
     } catch (e) {
       debugPrint('SessionController: startSession audio play error: $e');
     }
-    // simple timer demonstration (you can expand logic)
     sessionTimer?.cancel();
     sessionTimer = Timer.periodic(const Duration(seconds: 1), (_) {
       if (!_isPlaying) return;
       currentTime.value++;
-      // update other state as needed
     });
   }
 

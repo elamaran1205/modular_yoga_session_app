@@ -53,8 +53,8 @@ class DailyRoutine extends StatelessWidget {
                         borderRadius: BorderRadius.circular(20),
                         gradient: const LinearGradient(
                           colors: [
-                            Color(0xFFFFC107), // Amber start
-                            Color(0xFFFF9800), // Deep amber end
+                            Color(0xFFFFC107),
+                            Color(0xFFFF9800), 
                           ],
                         ),
                       ),
@@ -64,7 +64,7 @@ class DailyRoutine extends StatelessWidget {
       final session = await YogaService.loadSession(jsonPath: 'assets/data/poses.json');
       Get.toNamed(
         '/session-player',
-        arguments: session, // Pass session as argument
+        arguments: session, 
       );
     } catch (e) {
       Get.snackbar('Error', 'Failed to load yoga session: $e');
