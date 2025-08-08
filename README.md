@@ -1,3 +1,3 @@
-# yoga2
+# yoga Prototype
 
-A new Flutter project.
+A new Flutter assignment.
