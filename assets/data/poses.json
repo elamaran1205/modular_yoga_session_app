@@ -1,0 +1,49 @@
+{
+  "name": "Cat-Cow Flow",
+  "description": "A short modular cat-cow yoga flow.",
+  "segments": [
+    {
+      "type": "intro",
+      "audio": "audio/cat_cow_intro.mp3",
+      "script": [
+        {
+          "text": "Start in a neutral spine.",
+          "startSec": 0,
+          "endSec": 4,
+          "imageRef": "images/Base.png"
+        }
+      ]
+    },
+    {
+      "type": "loop",
+      "audio": "audio/cat_cow_loop.mp3",
+      "loops": 2,
+      "script": [
+        {
+          "text": "Inhale into Cow Pose.",
+          "startSec": 0,
+          "endSec": 5,
+          "imageRef": "images/Cow.png"
+        },
+        {
+          "text": "Exhale into Cat Pose.",
+          "startSec": 5,
+          "endSec": 10,
+          "imageRef": "images/Cat.png"
+        }
+      ]
+    },
+    {
+      "type": "outro",
+      "audio": "audio/cat_cow_outro.mp3",
+      "script": [
+        {
+          "text": "Return to a neutral spine and relax.",
+          "startSec": 0,
+          "endSec": 4,
+          "imageRef": "images/Base.png"
+        }
+      ]
+    }
+  ]
+}
